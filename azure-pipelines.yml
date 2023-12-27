@@ -62,6 +62,12 @@ steps:
   inputs:
     connectionType: 'Kubernetes Service Connection'
     kubernetesServiceEndpoint: 'aksServiceCon'
+    namespace: 'Default'
+    command: 'login'
+- task: Kubernetes@1
+  inputs:
+    connectionType: 'Kubernetes Service Connection'
+    kubernetesServiceEndpoint: 'aksServiceCon'
     namespace: 'default'
     command: 'apply'
     useConfigurationFile: true
