@@ -90,6 +90,6 @@ steps:
           spec:
             containers:
             - name: webapidemo-container
-              image: deepika210/webapidemo:latest
+              image: deepika210/webapidemo:12
               ports:
               - containerPort: 80
