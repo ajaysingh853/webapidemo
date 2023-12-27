@@ -68,23 +68,23 @@ steps:
     configurationType: 'inline'
     inline: |
       apiVersion: apps/v1
-            kind: Deployment
-            metadata:
-              name: webapidemo-deployment
-              labels:
-                app: webapidemo
-            spec:
-              replicas: 3
-              selector:
-                matchLabels:
-                  app: webapidemo
-              template:
-                metadata:
-                  labels:
-                    app: webapidemo
-                spec:
-                  containers:
-                  - name: webapidemo-container
-                    image: deepika210/webapidemo:latest
-                    ports:
-                    - containerPort: 80
+      kind: Deployment
+      metadata:
+        name: webapidemo-deployment
+        labels:
+          app: webapidemo
+      spec:
+        replicas: 3
+        selector:
+          matchLabels:
+            app: webapidemo
+        template:
+          metadata:
+            labels:
+              app: webapidemo
+          spec:
+            containers:
+            - name: webapidemo-container
+              image: deepika210/webapidemo:latest
+              ports:
+              - containerPort: 80
