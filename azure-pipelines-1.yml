@@ -56,6 +56,6 @@ steps:
           spec:
             containers:
             - name: democontainer2-container
-              image: deepika210/demorepo2:16
+              image: deepika210/demorepo2:$(Build.BuildId)
               ports:
               - containerPort: 80
