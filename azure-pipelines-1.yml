@@ -1,0 +1,61 @@
+# ASP.NET Core
+# Build and test ASP.NET Core projects targeting .NET Core.
+# Add steps that run tests, create a NuGet package, deploy, and more:
+# https://docs.microsoft.com/azure/devops/pipelines/languages/dotnet-core
+
+trigger:
+- main
+
+pool: Default
+
+variables:
+  buildConfiguration: 'Release'
+
+steps:
+- script: dotnet build --configuration $(buildConfiguration)
+  displayName: 'dotnet build $(buildConfiguration)'
+
+- task: DotNetCoreCLI@2
+  displayName: 'Dotnet Restore'
+  inputs:
+    command: 'restore'
+    feedsToUse: 'select'
+
+- task: Docker@2
+  displayName: 'Image build & pushed'
+  inputs:
+    containerRegistry: 'dockerSCon'
+    repository: 'deepika210/demorepo2'
+    command: 'buildAndPush'
+    Dockerfile: '**/Dockerfile'
+    
+- task: Kubernetes@1
+  inputs:
+    connectionType: 'Kubernetes Service Connection'
+    kubernetesServiceEndpoint: 'aksServiceCon'
+    namespace: 'default'
+    command: 'apply'
+    useConfigurationFile: true
+    configurationType: 'inline'
+    inline: |
+      apiVersion: apps/v1
+      kind: Deployment
+      metadata:
+        name: webapidemo1-deployment
+        labels:
+          app: webapidemo1
+      spec:
+        replicas: 1
+        selector:
+          matchLabels:
+            app: webapidemo1
+        template:
+          metadata:
+            labels:
+              app: webapidemo1
+          spec:
+            containers:
+            - name: democontainer2-container
+              image: deepika210/demorepo2:1
+              ports:
+              - containerPort: 80
